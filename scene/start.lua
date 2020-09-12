@@ -21,7 +21,7 @@ end
 
 local function exitApp(e)
     if 'ended' == e.phase then
-        native.showAlert('Exit Application', 'want to exit ?', {'Exit', 'Cancel'}, function(e)
+        native.showAlert('ออกจากเกม', 'คุณต้องการออกจากเกมใช่หรือไม่ ?', {'Exit', 'Cancel'}, function(e)
             if e.index == 1 then
                 native.requestExit()
             end
@@ -37,7 +37,7 @@ function scene:create(e)
     bg.x = display.contentCenterX / 2
     bg.y = display.contentCenterY / 2
     local btnStart = widget.newButton({
-        label = 'Start',
+        label = 'เริ่มเกม',
         shape = 'react',
         fillColor = { default= {46/255, 204/255, 113/255, 1}, over = {46/255, 230/255, 120/255, 1} },
         labelColor = { default = {1, 1, 1, 1} },
@@ -48,7 +48,7 @@ function scene:create(e)
 
 
     local btnAbout = widget.newButton({
-        label = 'About',
+        label = 'เกี่ยวกับ',
         shape = 'react',
         fillColor = { default={52/255, 152/255, 219/255, 1}, over = {41/255, 128/255, 185/255, 1} },
         labelColor = { default = {1, 1, 1, 1}},
@@ -59,7 +59,7 @@ function scene:create(e)
 
 
     local btnExit = widget.newButton({
-        label = 'Exit',
+        label = 'ออก',
         shape = 'react',
         fillColor = { default={231/255, 76/255, 60/255, 1}, over = {192/255, 57/255, 43/255, 1} },
         labelColor = { default = {1, 1, 1, 1}},

@@ -6,7 +6,7 @@ function scene:create(e)
     local scoreParam = e.params.totalScore
     local widget = require('widget')
     local score = display.newText({
-        text = 'Total Score: '..scoreParam,
+        text = 'คะเเนนที่ทำได้: '..scoreParam,
         x = display.contentCenterX,
         y = display.contentCenterY,
         font = native.systemFont,
@@ -16,7 +16,7 @@ function scene:create(e)
     bg.x = display.contentCenterX / 2
     bg.y = display.contentCenterY / 2
     local btnHome = widget.newButton({
-        label = 'Back to main',
+        label = 'กลับสู่หน้าหลัก',
         shape = 'react',
         fillColor = { default = {0, .7, 0, 1}, over = {0, 1, 0, 1}},
         labelColor = { default = {1, 1, 1, 1} },
@@ -25,6 +25,9 @@ function scene:create(e)
                 composer.gotoScene('scene.start', {
                     effect = 'fade', time = 500
                 })
+                timer.performWithDelay(500, function()
+                    composer.removeScene('scene.end')
+                end)
             end
         end
     })

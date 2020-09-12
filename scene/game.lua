@@ -7,11 +7,9 @@ local sceneNumberMax = 10
 local sceneNumber = 1
 
 local score = 0
-local wrong = 0
-local correct = 0
 
-local secondMax = 10
-local second = 0
+-- local secondMax = 10
+-- local second = 0
 
 local number1 = 0
 local number2 = 0
@@ -59,7 +57,7 @@ local function onSubmit()
                     wrong.isVisible = false
                     randomNumber()
                     sceneShow.text = sceneNumber..'/'..sceneNumberMax
-                    scoreShow.text = 'Score: '..score
+                    scoreShow.text = 'คะเเนน: '..score
                 end
             end
             
@@ -77,15 +75,16 @@ function scene:create(e)
 
     sceneShow = display.newText({
         text = sceneNumber..'/'..sceneNumberMax,
-        x = display.safeScreenOriginX + 25,
-        y = display.safeScreenOriginY + 15,
+        x = display.safeScreenOriginX + 35,
+        y = display.safeScreenOriginY + 25,
         font = native.systemFont,
         fontSize = 25
     })
 
     scoreShow = display.newText({
-        text = 'Score: '..score,
-        y = display.safeScreenOriginY + 15,
+        text = 'คะเเนน: '..score,
+        x = display.safeScreenOriginX + 35,
+        y = display.safeScreenOriginY + 25,
         font = native.systemFont,
         fontSize = 25
     })
@@ -94,7 +93,7 @@ function scene:create(e)
 
     
     local btnSubmit = widget.newButton({
-        label = 'Submit',
+        label = 'ตอบ',
         shape = 'react',
         fillColor = { default = {46/255, 204/255, 113/255, 1}, over = {39/255, 174/255, 96/255, 1} },
         labelColor = { default = {1, 1, 1, 1} },
@@ -102,7 +101,6 @@ function scene:create(e)
             if 'ended' == e.phase then
                 onSubmit()
             end
-            print(e.phase)
         end
     })
     btnSubmit.x = display.contentCenterX
@@ -136,9 +134,9 @@ function scene:create(e)
     })
     numPrimary:setFillColor(230/255, 126/255, 34/255, 1)
 
-    -- show on collect.
+    
     collect = display.newText({
-        text = 'Collect',
+        text = 'คำตอบถูก',
         x = display.contentCenterX,
         y = display.contentCenterY + 50,
         font = native.systemFont,
@@ -147,9 +145,9 @@ function scene:create(e)
     collect:setFillColor(68/255, 189/255, 50/255, 1)
     collect.isVisible = false
 
-    -- show on wrong.
+    
     wrong = display.newText({
-        text = 'Wrong',
+        text = 'คำตอบผิด',
         x = display.contentCenterX,
         y = display.contentCenterY + 50,
         font = native.systemFont,
