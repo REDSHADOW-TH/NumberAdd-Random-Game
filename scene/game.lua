@@ -1,42 +1,184 @@
 composer = require('composer')
 widget = require('widget')
 
-scene = composer.newScene()
+local scene = composer.newScene()
+
+local sceneNumberMax = 10
+local sceneNumber = 1
+
+local score = 0
+local wrong = 0
+local correct = 0
+
+local secondMax = 10
+local second = 0
+
+local number1 = 0
+local number2 = 0
+
+
+local numberPrimary = 0
+
+local numberSubmit = native.newTextField(
+    display.contentCenterX + 70, display.contentCenterY,70, 50
+)
+numberSubmit.inputType = 'number'
+
+
+local function randomNumber()
+    number1 = math.random(1, 50)
+    number2 = math.random(1, 50)
+    number1Show.text = number1
+    numberPrimary = number1 + number2
+    numPrimary.text = numberPrimary
+end
+
+local function onSubmit()
+    if numberSubmit.text ~= nil and numberSubmit.text ~= '' then
+        if number2 == tonumber(numberSubmit.text) then
+            score = score + 1
+            collect.isVisible = true
+        else
+            wrong.isVisible = true
+        end
+        timer.performWithDelay(450, function(e)
+            if sceneNumber == sceneNumberMax then
+                if numberSubmit then
+                    numberSubmit:removeSelf()
+                    numberSubmit = nil
+                end
+                composer.gotoScene('scene.end', {
+                    effect = 'fade', time = 450, params = { totalScore = score }
+                })
+                composer.removeScene('scene.game')
+            else
+                if sceneNumber <= sceneNumberMax then
+                    sceneNumber = sceneNumber + 1
+                    numberSubmit.text = ''
+                    collect.isVisible = false
+                    wrong.isVisible = false
+                    randomNumber()
+                    sceneShow.text = sceneNumber..'/'..sceneNumberMax
+                    scoreShow.text = 'Score: '..score
+                end
+            end
+            
+        end)
+        
+    end
+    
+end
+
 
 function scene:create(e)
-    display.setDefault('background', .6, .2, .6)
-    t1 = display.newText({
-        text = 'Game Scene',
-        x = display.contentCenterX,
+    local bg = display.newImage('res/images/bg.jpg', display.contentWidth, display.contentHeight)
+    bg.x = display.contentCenterX / 2
+    bg.y = display.contentCenterY / 2
+
+    sceneShow = display.newText({
+        text = sceneNumber..'/'..sceneNumberMax,
+        x = display.safeScreenOriginX + 25,
+        y = display.safeScreenOriginY + 15,
+        font = native.systemFont,
+        fontSize = 25
+    })
+
+    scoreShow = display.newText({
+        text = 'Score: '..score,
+        y = display.safeScreenOriginY + 15,
+        font = native.systemFont,
+        fontSize = 25
+    })
+
+    scoreShow.x = display.contentWidth - (scoreShow.width - 35)
+
+    
+    local btnSubmit = widget.newButton({
+        label = 'Submit',
+        shape = 'react',
+        fillColor = { default = {46/255, 204/255, 113/255, 1}, over = {39/255, 174/255, 96/255, 1} },
+        labelColor = { default = {1, 1, 1, 1} },
+        onEvent = function(e)
+            if 'ended' == e.phase then
+                onSubmit()
+            end
+            print(e.phase)
+        end
+    })
+    btnSubmit.x = display.contentCenterX
+    btnSubmit.y = display.contentCenterY + 150
+
+
+    number1Show = display.newText({
+        text = number1,
+        x = display.contentCenterX - 70,
         y = display.contentCenterY,
         font = native.systemFont,
         fontSize = 50
     })
-    btnExit = widget.newButton({
-        label = 'Exit',
-        shape = 'react',
-        fillColor = { default = {1, 0, 0, 1}, over = {1, 0, 0, 1} },
-        labelColor = { default = {1, 1, 1, 1} },
-        onEvent = function(e)
-            if 'ended' == e.phase then
-                composer.gotoScene('scene.start', {
-                    effect = 'fade', time = 300
-                })
-            end
-        end
+
+    local t1 = display.newText({
+        text = '+',
+        x = display.contentCenterX,
+        y = display.contentCenterY,
+        font = native.systemFont,
+        fontSize = 30
     })
-    btnExit.x = display.contentCenterX
-    btnExit.y = display.contentCenterY + 150
+
+    
+
+    numPrimary = display.newText({
+        text = numberPrimary,
+        x = display.contentCenterX,
+        y = display.contentCenterY - 150,
+        font = native.systemFont,
+        fontSize = 145
+    })
+    numPrimary:setFillColor(230/255, 126/255, 34/255, 1)
+
+    -- show on collect.
+    collect = display.newText({
+        text = 'Collect',
+        x = display.contentCenterX,
+        y = display.contentCenterY + 50,
+        font = native.systemFont,
+        fontSize = 15
+    })
+    collect:setFillColor(68/255, 189/255, 50/255, 1)
+    collect.isVisible = false
+
+    -- show on wrong.
+    wrong = display.newText({
+        text = 'Wrong',
+        x = display.contentCenterX,
+        y = display.contentCenterY + 50,
+        font = native.systemFont,
+        fontSize = 15
+    })
+    wrong:setFillColor(1, 0, 0, 1)
+    wrong.isVisible = false
+
+
+    self.view:insert(bg)
+    self.view:insert(sceneShow)
+    self.view:insert(scoreShow)
     self.view:insert(t1)
-    self.view:insert(btnExit)
+    self.view:insert(btnSubmit)
+    self.view:insert(number1Show)
+    self.view:insert(numberSubmit)
+    self.view:insert(numPrimary)
+    self.view:insert(collect)
+    self.view:insert(wrong)
 end
 
 
 function scene:show(e)
+    randomNumber()
 end
 
 
 function scene:hide(e)
+    
 end
 
 
