@@ -21,7 +21,7 @@ end
 
 local function exitApp(e)
     if 'ended' == e.phase then
-        native.showAlert('ออกจากเกม', 'คุณต้องการออกจากเกมใช่หรือไม่ ?', {'Exit', 'Cancel'}, function(e)
+        native.showAlert('ออกจากเกม', 'คุณต้องการออกจากเกมใช่หรือไม่ ?', {'ออก', 'ยกเลิก'}, function(e)
             if e.index == 1 then
                 native.requestExit()
             end
